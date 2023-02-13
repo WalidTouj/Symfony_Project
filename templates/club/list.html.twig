@@ -1,0 +1,61 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello ClubController!{% endblock %}
+
+{% block body %}
+<style>
+    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
+    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+</style>
+
+<div class="example-wrapper">
+    {% set p = formations  %}
+    {% if  p is defined and p is not empty %}
+    
+    <h2>la liste des formations : 
+    {% for form in p  %}
+    
+    <h4>{{form['Titre']|upper}} 
+    {% if form['nb_participants'] == 0 %}
+    <a href="{{path('getName',{nom:form['Titre']})}}"> <button>Participer</button></a>
+    {%endif%}
+    </h4> 
+    {% endfor %}
+    </h2>
+
+    <h2>Le nombre des formations sont : {{p|length}}</h2>
+
+    <h2>Les formations théoriques sont :</h2>
+     {% for form in p  %}
+     {% if form['Description'] is same as('formation theorique') %}
+    <h4>{{form['Titre']}}</h4>
+     {% endif %}
+     {% endfor %}
+
+     {% set k = 0 %}
+     {% for item in p %}
+     {% if item['nb_participants'] > k %}
+     {% set k = item['nb_participants'] %}
+    
+     {% endif %}
+     {% endfor %}
+     {% for form in p %} 
+     {% if form['nb_participants'] == k %}
+     <h2>Le titre de la formation ayant le plus grand nombre de participants : {{form['Titre']}}</h2>
+     {% endif %}
+     {% endfor %}
+      
+      {% set nbr = 0 %}
+     {% for item in p %}
+     {% set nbr = nbr + item['nb_participants']%}
+        
+     {% endfor %}
+     <h2>Le nombre total de participants dans toutes les formations: {{nbr}}</h2>
+     {%else%}
+     <h2>Le tableau est vide</h2>
+     {% endif %}
+
+
+
+</div>
+{% endblock %}
